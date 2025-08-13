@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hospital";
+}
+
+
+<!-- HERO SECTION -->
+<section class="py-5" style="background-color: #F5F7FA;">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- LEFT COLUMN: Text -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold" style="color: #0077B6;">
+                    Welcome to CarePoint Hospital
+                </h1>
+                <p class="lead mb-4" style="color: #2E3A46;">
+                    Your trusted partner for quality healthcare — book appointments, consult with top doctors, and manage your health with ease.
+                </p>
+                <a href="#services" class="btn btn-lg btn-custom-green">
+                    Explore Our Services
+                </a>
+                <a href="#contact" class="btn btn-outline-primary btn-lg ms-2">
+                    Contact Us
+                </a>
+            </div>
+            <!-- RIGHT COLUMN: Image -->
+            <div class="col-lg-6 text-center">
+                <img src="/images/main/hero.png" alt="Doctor consultation illustration"
+                     class="img-fluid hero-image" style="max-height: 400px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section id="services" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4 fw-bold" style="color:#0077B6;">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 bg-white service-card card" >
+                    <i class="fas fa-stethoscope fa-3x mb-3 text-primary"></i>
+                    <h5>Internal Medicine</h5>
+                    <p>Comprehensive diagnosis and treatment for adult health conditions.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white service-card card" >
+                    <i class="fas fa-baby fa-3x mb-3 text-success"></i>
+                    <h5>Pediatrics</h5>
+                    <p>Dedicated care for newborns, children, and adolescents.</p>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="p-4 bg-white service-card card" >
+                    <i class="fas fa-user-md fa-3x mb-3 text-info"></i>
+                    <h5>Surgery</h5>
+                    <p>Advanced surgical procedures with patient-focused recovery plans.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="py-5" style="background-color: #F5F7FA;">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4" style="color:#0077B6;">Get in Touch</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Your Name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="you@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" rows="4" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

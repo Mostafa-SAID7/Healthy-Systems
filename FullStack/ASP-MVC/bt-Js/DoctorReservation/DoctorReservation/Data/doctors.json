@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "Name": "Dr. John Smith",
+    "Specialization": "Cardiology",
+    "Img": "~/images/doctors/doc7.png"
+  },
+  {
+    "Id": 2,
+    "Name": "Dr. Sarah Johnson",
+    "Specialization": "Pediatrics",
+    "Img": "~/images/doctors/doc2.png"
+  },
+  {
+    "Id": 3,
+    "Name": "Dr. Emily Davis",
+    "Specialization": "Dermatology",
+    "Img": "~/images/doctors/doc6.png"
+  },
+  {
+    "Id": 4,
+    "Name": "Dr. Michael Lee",
+    "Specialization": "Orthopedics",
+    "Img": "~/images/doctors/doc4.png"
+  },
+  {
+    "Id": 5,
+    "Name": "Dr. William Clark",
+    "Specialization": "Neurology",
+    "Img": "~/images/doctors/doc5.png"
+  },
+  {
+    "Id": 6,
+    "Name": "Dr. William Clark",
+    "Specialization": "Neurology",
+    "Img": "~/images/doctors/doc3.png"
+  },
+  {
+    "Id": 7,
+    "Name": "Dr. William Clark",
+    "Specialization": "Neurology",
+    "Img": "~/images/doctors/doc1.png"
+  },
+  {
+    "Id": 8,
+    "Name": "Dr. William Clark",
+    "Specialization": "Neurology",
+    "Img": "~/images/doctors/doc8.png"
+  }
+]

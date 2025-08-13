@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DoctorReservation</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/logos/iconlogo.png">
+    <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoctorReservation.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light custom-navbar shadow-sm">
+            <div class="container-fluid">
+                <!-- Logo / Brand -->
+                <a class="navbar-brand fw-bold d-flex align-items-center brand-logo"
+                   asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/logos/logo.png"
+                         alt="CarePoint Logo"
+                         class="me-2">
+                </a>
+
+                <!-- Mobile Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                        aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation Links -->
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <div class="btn-group booking-btn-group" role="group" aria-label="Appointment Actions">
+                                <a class="nav-link active-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="btn btn-custom-green" asp-controller="Home" asp-action="BookAppointment">
+                                    Book Appointment
+                                </a>
+                                <a class="btn btn-custom-green" asp-controller="Home" asp-action="CompleteAppointment">
+                                    Complete Appointment
+                                </a>
+                                <a class="btn btn-custom-green" asp-controller="Home" asp-action="ReservationsManagement">
+                                    Manage Reservations
+                                </a>
+                            </div>
+
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="custom-footer">
+        <div class="container py-4">
+            <div class="row">
+                <!-- Brand & Tagline -->
+                <div class="col-md-4 mb-3 mb-md-0 footer-brand-logo">
+                    <img src="/images/logos/aboutlogo.png" alt="CarePoint Logo" class="me-2">
+                    <p class="footer-tagline">Your trusted partner in health and wellness.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="footer-link">Home</a></li>
+                        <li><a href="#services" class="footer-link">Services</a></li>
+                        <li><a href="#contact" class="footer-link">Contact</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-md-4">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +1 234 567 890</p>
+                    <p class="mb-1"><i class="fas fa-envelope me-2"></i> info@carepoint.com</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> 123 Health Street, City, Country</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom mt-4 pt-3 border-top text-center">
+                <small>&copy; 2025 CarePoint. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

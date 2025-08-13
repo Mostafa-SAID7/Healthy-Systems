@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Complete Appointment";
+}
+
+<h1 class="page-title text-center mb-4">
+    Complete Appointment with <span class="doctor-name">Dr. John Smith</span>
+</h1>
+
+<div class="appointment-form-container mx-auto shadow-sm p-4 rounded bg-white">
+    <form id="appointmentForm" method="post" action="#">
+        <div class="mb-3">
+            <label for="patientName" class="form-label">Patient Name:</label>
+            <input type="text" class="form-control" id="patientName" name="patientName" placeholder="Enter patient full name" required>
+        </div>
+        <div class="mb-3">
+            <label for="appointmentDate" class="form-label">Appointment Date:</label>
+            <input type="text" class="form-control" id="appointmentDate" name="appointmentDate" required>
+        </div>
+        <div class="mb-3">
+            <label for="appointmentTime" class="form-label">Appointment Time:</label>
+            <select class="form-control" id="appointmentTime" name="appointmentTime" required></select>
+        </div>
+        <button type="submit" class="btn btn-custom-green w-100 mt-3">
+            <i class="fas fa-check-circle me-2"></i> Complete Appointment
+        </button>
+    </form>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-center p-4">
+            <h5 class="modal-title mb-3 text-success">
+                <i class="fas fa-check-circle fa-2x"></i> Appointment Completed
+            </h5>
+            <p>Your appointment has been successfully completed. Thank you!</p>
+            <button type="button" class="btn btn-custom-green mt-2" data-bs-dismiss="modal">OK</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/appointment-validation.js"></script>
+}

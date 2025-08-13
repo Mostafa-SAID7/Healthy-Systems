@@ -1,0 +1,428 @@
+/* ===== Global Reset & Base ===== */
+html {
+    font-size: 14px;
+    scroll-behavior: smooth;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #2E3A46;
+    background-color: #fff;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Caveat Brush', cursive;
+    font-weight: bold;
+    color: #0077B6;
+    letter-spacing: 0.5px;
+}
+.btn-custom-green {
+    background-color: #00B894;
+    color: white !important;
+    border-radius: 8px;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 184, 148, 0.4);
+    animation: pulseGreen 2s infinite;
+}
+
+    .btn-custom-green:hover {
+        background-color: #0077B6;
+        box-shadow: 0px 6px 14px rgba(0, 119, 182, 0.5);
+        transform: translateY(-2px);
+    }
+
+/* Pulse Animation */
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 184, 148, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 184, 148, 0);
+    }
+}
+
+.booking-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+    .booking-btn-group .btn {
+        flex: 1 1 auto;
+        min-width: 180px;
+        text-align: center;
+    }
+
+/* Mobile-friendly adjustments */
+@media (max-width: 576px) {
+    .booking-btn-group {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ===== Navbar ===== */
+.custom-navbar {
+    background-color: #FFFFFF;
+    border-bottom: 3px solid #0077B6;
+    font-family: 'Caveat', cursive;
+    transition: all 0.3s ease;
+}
+
+    .custom-navbar .navbar-brand {
+        font-family: 'Caveat Brush', cursive;
+        font-size: 1.8rem;
+        color: #0077B6;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+        .custom-navbar .navbar-brand:hover {
+            color: #00B894;
+            transform: scale(1.05);
+        }
+
+    .custom-navbar .nav-link {
+        font-size: 1.2rem;
+        color: #2E3A46;
+        margin: 0 8px;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        padding: 6px 12px;
+    }
+
+        .custom-navbar .nav-link:hover {
+            background-color: #F5F7FA;
+            color: #0077B6;
+            transform: translateY(-2px);
+        }
+
+    .custom-navbar .active-link {
+        color: #0077B6;
+        font-weight: bold;
+        border-bottom: 2px solid #00B894;
+    }
+
+/* ===== Brand Logo ===== */
+.brand-logo img {
+    height: 70px;
+    width: 150px;
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 119, 182, 0.4);
+}
+
+/* ===== Buttons ===== */
+.btn-custom-green {
+    background-color: #00B894;
+    color: white !important;
+    border-radius: 8px;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 184, 148, 0.4);
+}
+
+    .btn-custom-green:hover {
+        background-color: #0077B6;
+        box-shadow: 0px 6px 14px rgba(0, 119, 182, 0.5);
+        transform: translateY(-2px);
+    }
+
+.btn-outline-primary:hover {
+    background-color: #0077B6;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* ===== Hero Section ===== */
+.hero-image {
+    border-radius: 15px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .hero-image:hover {
+        transform: scale(1.03);
+        box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+    }
+
+/* ===== Services ===== */
+.service-card {
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+    .service-card:hover {
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-5px);
+    }
+
+    .service-card i {
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .service-card:hover i {
+        transform: scale(1.1);
+        color: #00B894;
+    }
+
+/* ===== Contact Form ===== */
+#contact form {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+}
+
+#contact button {
+    background-color: #0077B6;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    #contact button:hover {
+        background-color: #00B894;
+    }
+
+/*page Book Appointment style */
+.doctor-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+.page-title {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 2.2rem;
+    color: #0077B6;
+}
+
+.doctor-card {
+    margin:10px;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 20px rgba(0, 119, 182, 0.2);
+    }
+
+.doctor-img {
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 3px solid #00B894;
+}
+
+.card-title {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.5rem;
+    color: #0077B6;
+}
+
+.card-text {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+}
+
+.btn-custom-green {
+    background-color: #00B894;
+    color: white !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom-green:hover {
+        background-color: #0077B6;
+        box-shadow: 0px 6px 14px rgba(0, 119, 182, 0.5);
+        transform: translateY(-2px);
+    }
+
+/*End page Book Appointment style */
+/*start page Complete Appointment style */
+.page-title {
+    margin:20px;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 2rem;
+    color: #0077B6;
+}
+
+.doctor-name {
+    color: #00B894;
+}
+
+.appointment-form-container {
+    max-width: 500px;
+    margin-bottom:20px;
+}
+
+.form-label {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.2rem;
+    color: #0077B6;
+}
+
+.form-control {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #00B894;
+        box-shadow: 0 0 0 0.25rem rgba(0, 184, 148, 0.25);
+    }
+
+.btn-custom-green {
+    background-color: #00B894;
+    color: white;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom-green:hover {
+        background-color: #0077B6;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 14px rgba(0, 119, 182, 0.4);
+    }
+
+/*end page Complete Appointment style */
+/*start page Reservations Management style */
+.page-title {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 2rem;
+    color: #0077B6;
+}
+
+.reservations-table-container {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-bottom:20px;
+}
+
+.table-custom-header {
+    background-color: #0077B6;
+    color: white;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.2rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #F5F7FA;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+    font-size: 1rem;
+}
+
+/*end page Reservations Management style */
+/* ===== Footer ===== */
+.custom-footer {
+    background-color: #F5F7FA;
+    font-family: 'Caveat', cursive;
+    color: #2E3A46;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.footer-brand {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.8rem;
+    color: #0077B6;
+}
+
+.footer-title {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.4rem;
+    color: #0077B6;
+    margin-bottom: 10px;
+}
+
+.footer-link {
+    color: #2E3A46;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .footer-link:hover {
+        color: #00B894;
+        padding-left: 4px;
+    }
+
+.footer-bottom {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Footer Logo Styles */
+.footer-brand-logo img {
+    height: 90px;
+    width: 190px;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+    .footer-brand-logo img:hover {
+        transform: scale(1.08);
+        box-shadow: 0 4px 12px rgba(0, 184, 148, 0.5);
+    }
+
+.footer-tagline {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #2E3A46;
+    font-family: 'Caveat', cursive;
+}
