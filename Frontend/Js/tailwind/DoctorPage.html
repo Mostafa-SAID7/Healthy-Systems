@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Directory - DocToBook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+        .specialty-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-size: 1.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            }
+
+        .btn-secondary {
+            background: white;
+            color: #4f46e5;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-secondary:hover {
+                background: #f9fafb;
+                transform: translateY(-2px);
+            }
+
+        .action-btn {
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+            .action-btn:hover {
+                transform: translateY(-1px);
+            }
+
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .stats-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+        .doctor-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border: 2px dashed #d1d5db;
+            border-radius: 1rem;
+        }
+
+        .animate-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .availability-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            border: 2px solid white;
+        }
+
+        .favorite-btn {
+            transition: all 0.3s ease;
+        }
+
+            .favorite-btn:hover {
+                transform: scale(1.1);
+            }
+
+        .favorited {
+            color: #f59e0b;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .rating-stars {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .star {
+            color: #d1d5db;
+        }
+
+            .star.filled {
+                color: #f59e0b;
+            }
+
+            .star.half:after {
+                content: '★';
+                position: absolute;
+                left: 0;
+                width: 50%;
+                overflow: hidden;
+                color: #f59e0b;
+            }
+
+        /* Custom animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* View toggle styles */
+        .view-toggle {
+            display: inline-flex;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+        }
+
+        .view-toggle-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+
+            .view-toggle-btn.active {
+                background-color: white;
+                color: #4f46e5;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            }
+
+        /* Filter panel */
+        .filter-panel {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+            .filter-panel.open {
+                max-height: 500px;
+            }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #94a3b8;
+            }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade transition for search/filter */
+        .fade-transition {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Modals -->
+    <div class="modal-overlay" id="appointmentModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="text-lg font-semibold text-gray-800" id="appointmentDoctorName">Book Appointment</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="appointmentForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="appointmentDate">Date</label>
+                        <input type="date" id="appointmentDate" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="appointmentTime">Time</label>
+                        <select id="appointmentTime" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" required>
+                            <option value="">Select a time</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="appointmentReason">Reason for visit</label>
+                        <textarea id="appointmentReason" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" placeholder="Briefly describe the reason for your appointment"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 close-modal">Cancel</button>
+                <button class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700" id="confirmAppointment">Confirm Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="text-lg font-semibold text-gray-800" id="messageDoctorName">Send Message</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="messageForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="messageSubject">Subject</label>
+                        <input type="text" id="messageSubject" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="messageContent">Message</label>
+                        <textarea id="messageContent" rows="5" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" placeholder="Type your message here..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 close-modal">Cancel</button>
+                <button class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700" id="sendMessage">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="doctorModal">
+        <div class="modal-container" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="text-lg font-semibold text-gray-800" id="modalDoctorName">Doctor Profile</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="doctorModalContent" class="space-y-4">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 close-modal">Close</button>
+                <button class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700" id="bookFromModal">Book Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Doctors Directory</h1>
+                <p class="text-gray-600 mt-2">Find and connect with healthcare professionals</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button class="btn-secondary flex items-center gap-2" id="filterToggle">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+                <a href="#" class="btn-primary flex items-center gap-2">
+                    <i class="fas fa-plus"></i> Add Doctor
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="stats-card p-4 text-center">
+                <div class="text-2xl font-bold text-indigo-600" id="totalDoctors">64</div>
+                <div class="text-gray-600">Total Doctors</div>
+            </div>
+            <div class="stats-card p-4 text-center">
+                <div class="text-2xl font-bold text-green-500" id="availableToday">52</div>
+                <div class="text-gray-600">Available Today</div>
+            </div>
+            <div class="stats-card p-4 text-center">
+                <div class="text-2xl font-bold text-amber-500">4.8</div>
+                <div class="text-gray-600">Average Rating</div>
+            </div>
+            <div class="stats-card p-4 text-center">
+                <div class="text-2xl font-bold text-blue-500">18</div>
+                <div class="text-gray-600">Specializations</div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel bg-white rounded-xl shadow-sm mb-8 overflow-hidden" id="filterPanel">
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Specialization Filter -->
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">Specialization</h3>
+                        <div class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="cardiology" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 specialization-filter" value="Cardiology">
+                                <label for="cardiology" class="ml-2 text-sm text-gray-700">Cardiology</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="neurology" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 specialization-filter" value="Neurology">
+                                <label for="neurology" class="ml-2 text-sm text-gray-700">Neurology</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="pediatrics" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 specialization-filter" value="Pediatrics">
+                                <label for="pediatrics" class="ml-2 text-sm text-gray-700">Pediatrics</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="orthopedics" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 specialization-filter" value="Orthopedics">
+                                <label for="orthopedics" class="ml-2 text-sm text-gray-700">Orthopedics</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="dermatology" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 specialization-filter" value="Dermatology">
+                                <label for="dermatology" class="ml-2 text-sm text-gray-700">Dermatology</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Availability Filter -->
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">Availability</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" id="available-now" name="availability" class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 availability-filter" value="today">
+                                <label for="available-now" class="ml-2 text-sm text-gray-700">Available Now</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="this-week" name="availability" class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 availability-filter" value="week">
+                                <label for="this-week" class="ml-2 text-sm text-gray-700">This Week</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="next-week" name="availability" class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 availability-filter" value="next-week">
+                                <label for="next-week" class="ml-2 text-sm text-gray-700">Next Week</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="anytime" name="availability" checked class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 availability-filter" value="any">
+                                <label for="anytime" class="ml-2 text-sm text-gray-700">Anytime</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">Rating</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" id="rating-4plus" name="rating" class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 rating-filter" value="4">
+                                <label for="rating-4plus" class="ml-2 text-sm text-gray-700">4+ Stars</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="rating-3plus" name="rating" class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 rating-filter" value="3">
+                                <label for="rating-3plus" class="ml-2 text-sm text-gray-700">3+ Stars</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="rating-any" name="rating" checked class="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500 rating-filter" value="any">
+                                <label for="rating-any" class="ml-2 text-sm text-gray-700">Any Rating</label>
+                            </div>
+                        </div>
+
+                        <h3 class="font-semibold text-gray-800 mt-4 mb-3">Experience</h3>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 experience-filter">
+                            <option value="any">Any Experience</option>
+                            <option value="1-5">1-5 years</option>
+                            <option value="5-10">5-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6 gap-3">
+                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200" id="resetFilters">
+                        Reset Filters
+                    </button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700" id="applyFilters">
+                        Apply Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and View Controls -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" placeholder="Search doctors by name, specialty, or keywords..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition" id="searchInput">
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition" id="sortSelect">
+                        <option value="recommended">Sort by: Recommended</option>
+                        <option value="experience">Sort by: Experience</option>
+                        <option value="rating">Sort by: Rating</option>
+                        <option value="availability">Sort by: Availability</option>
+                    </select>
+
+                    <!-- View Toggle -->
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" id="gridViewBtn">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-toggle-btn" id="listViewBtn">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-4">
+                <button class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm quick-filter" data-filter="all">All Specialties</button>
+                <button class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm quick-filter" data-filter="top-rated">Top Rated</button>
+                <button class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm quick-filter" data-filter="available-today">Available Today</button>
+                <button class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm quick-filter" data-filter="new">New</button>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden flex justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            <span class="ml-3 text-gray-600">Loading doctors...</span>
+        </div>
+
+        <!-- Doctors Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 fade-transition" id="doctorsContainer">
+            <!-- Doctor cards will be loaded dynamically -->
+        </div>
+
+        <!-- Enhanced Pagination Component -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <!-- Page Info -->
+                <div class="text-sm text-gray-600">
+                    Showing <strong class="text-gray-900" id="currentPageStart">1</strong> to
+                    <strong class="text-gray-900" id="currentPageEnd">9</strong> of
+                    <strong class="text-gray-900" id="totalDoctorsCount">64</strong> doctors
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="flex items-center gap-1">
+                    <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-prev" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page active" data-page="1">1</button>
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="2">2</button>
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="3">3</button>
+
+                    <span class="px-2 text-gray-500">...</span>
+
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="7">7</button>
+
+                    <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Results per page -->
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-600">Show:</span>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500" id="perPageSelect">
+                        <option value="9">9</option>
+                        <option value="18">18</option>
+                        <option value="27">27</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Doctor data - in a real app, this would come from an API
+        const doctorsData = [
+            {
+                id: 1,
+                name: "Dr. Sarah Johnson",
+                specialty: "Cardiologist",
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.9,
+                reviews: 128,
+                tags: ["Heart Health", "Hypertension", "ECG"],
+                description: "Specializes in cardiovascular diseases and heart conditions. Over 15 years of experience in cardiology.",
+                experience: 15,
+                distance: 2.3,
+                available: true,
+                favorite: false
+            },
+            {
+                id: 2,
+                name: "Dr. Michael Chen",
+                specialty: "Neurologist",
+                image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.8,
+                reviews: 96,
+                tags: ["Brain Health", "Epilepsy", "MRI"],
+                description: "Specializes in neurological disorders with expertise in epilepsy treatment and management.",
+                experience: 12,
+                distance: 3.1,
+                available: true,
+                favorite: true
+            },
+            {
+                id: 3,
+                name: "Dr. Emily Rodriguez",
+                specialty: "Pediatrician",
+                image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.7,
+                reviews: 87,
+                tags: ["Child Health", "Vaccinations", "Growth"],
+                description: "Specializes in child healthcare and development. Provides compassionate care for infants to adolescents.",
+                experience: 10,
+                distance: 1.7,
+                available: false,
+                favorite: false
+            },
+            // Add more doctors here to fill out the list
+            {
+                id: 4,
+                name: "Dr. James Wilson",
+                specialty: "Orthopedics",
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.6,
+                reviews: 75,
+                tags: ["Bone Health", "Sports Injury", "Arthritis"],
+                description: "Specializes in orthopedic surgery and treatment of musculoskeletal conditions.",
+                experience: 14,
+                distance: 4.2,
+                available: true,
+                favorite: false
+            },
+            {
+                id: 5,
+                name: "Dr. Lisa Patel",
+                specialty: "Dermatology",
+                image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.9,
+                reviews: 112,
+                tags: ["Skin Care", "Acne Treatment", "Dermatology"],
+                description: "Specializes in dermatology and treatment of skin conditions with over 8 years of experience.",
+                experience: 8,
+                distance: 2.8,
+                available: true,
+                favorite: true
+            },
+            {
+                id: 6,
+                name: "Dr. Robert Kim",
+                specialty: "Cardiologist",
+                image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.7,
+                reviews: 92,
+                tags: ["Heart Health", "Cardiology", "ECG"],
+                description: "Specializes in interventional cardiology with expertise in cardiac catheterization.",
+                experience: 11,
+                distance: 5.1,
+                available: false,
+                favorite: false
+            },
+            {
+                id: 7,
+                name: "Dr. Maria Garcia",
+                specialty: "Pediatrician",
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.8,
+                reviews: 103,
+                tags: ["Child Health", "Pediatrics", "Vaccinations"],
+                description: "Specializes in pediatric care with focus on preventive medicine and child development.",
+                experience: 13,
+                distance: 1.2,
+                available: true,
+                favorite: false
+            },
+            {
+                id: 8,
+                name: "Dr. David Smith",
+                specialty: "Neurology",
+                image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.5,
+                reviews: 68,
+                tags: ["Brain Health", "Neurology", "Epilepsy"],
+                description: "Specializes in treatment of neurological disorders including stroke and epilepsy.",
+                experience: 9,
+                distance: 3.7,
+                available: true,
+                favorite: false
+            },
+            {
+                id: 9,
+                name: "Dr. Jennifer Lee",
+                specialty: "Dermatology",
+                image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80",
+                rating: 4.9,
+                reviews: 121,
+                tags: ["Skin Care", "Dermatology", "Cosmetic"],
+                description: "Specializes in medical and cosmetic dermatology with expertise in laser treatments.",
+                experience: 7,
+                distance: 2.1,
+                available: true,
+                favorite: true
+            }
+        ];
+
+        // State management
+        let currentPage = 1;
+        let itemsPerPage = 9;
+        let filteredDoctors = [...doctorsData];
+        let currentDoctor = null;
+
+        // DOM elements
+        const doctorsContainer = document.getElementById('doctorsContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const totalDoctorsElement = document.getElementById('totalDoctors');
+        const availableTodayElement = document.getElementById('availableToday');
+        const currentPageStartElement = document.getElementById('currentPageStart');
+        const currentPageEndElement = document.getElementById('currentPageEnd');
+        const totalDoctorsCountElement = document.getElementById('totalDoctorsCount');
+        const perPageSelect = document.getElementById('perPageSelect');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const applyFiltersButton = document.getElementById('applyFilters');
+        const resetFiltersButton = document.getElementById('resetFilters');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDoctors();
+            setupEventListeners();
+            updatePagination();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Pagination
+            document.querySelectorAll('.pagination-page').forEach(button => {
+                button.addEventListener('click', function() {
+                    const page = parseInt(this.getAttribute('data-page'));
+                    goToPage(page);
+                });
+            });
+
+            document.querySelector('.pagination-prev').addEventListener('click', function() {
+                goToPage(currentPage - 1);
+            });
+
+            document.querySelector('.pagination-next').addEventListener('click', function() {
+                goToPage(currentPage + 1);
+            });
+
+            // Items per page
+            perPageSelect.addEventListener('change', function() {
+                itemsPerPage = parseInt(this.value);
+                currentPage = 1;
+                renderDoctors();
+                updatePagination();
+            });
+
+            // Search
+            searchInput.addEventListener('input', debounce(function() {
+                filterDoctors();
+            }, 300));
+
+            // Sort
+            sortSelect.addEventListener('change', function() {
+                sortDoctors(this.value);
+                renderDoctors();
+            });
+
+            // Filters
+            applyFiltersButton.addEventListener('click', function() {
+                applyFilters();
+            });
+
+            resetFiltersButton.addEventListener('click', function() {
+                resetFilters();
+            });
+
+            // Quick filters
+            document.querySelectorAll('.quick-filter').forEach(button => {
+                button.addEventListener('click', function() {
+                    applyQuickFilter(this.getAttribute('data-filter'));
+                });
+            });
+
+            // Modal close buttons
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', function() {
+                    closeAllModals();
+                });
+            });
+
+            // Modal overlay click to close
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAllModals();
+                    }
+                });
+            });
+
+            // Appointment form submission
+            document.getElementById('confirmAppointment').addEventListener('click', function() {
+                const date = document.getElementById('appointmentDate').value;
+                const time = document.getElementById('appointmentTime').value;
+                const reason = document.getElementById('appointmentReason').value;
+
+                if (!date || !time) {
+                    alert('Please select both date and time for your appointment.');
+                    return;
+                }
+
+                // In a real app, you would send this data to a server
+                alert(`Appointment booked with ${currentDoctor.name} on ${date} at ${time}. Reason: ${reason || 'Not specified'}`);
+                closeAllModals();
+            });
+
+            // Message form submission
+            document.getElementById('sendMessage').addEventListener('click', function() {
+                const subject = document.getElementById('messageSubject').value;
+                const content = document.getElementById('messageContent').value;
+
+                if (!subject || !content) {
+                    alert('Please fill in both subject and message fields.');
+                    return;
+                }
+
+                // In a real app, you would send this data to a server
+                alert(`Message sent to ${currentDoctor.name} with subject: ${subject}`);
+                closeAllModals();
+            });
+
+            // Book from modal button
+            document.getElementById('bookFromModal').addEventListener('click', function() {
+                closeAllModals();
+                setTimeout(() => {
+                    openAppointmentModal(currentDoctor);
+                }, 300);
+            });
+
+            // Keep existing functionality
+            document.getElementById('filterToggle').addEventListener('click', function() {
+                const panel = document.getElementById('filterPanel');
+                panel.classList.toggle('open');
+
+                if (panel.classList.contains('open')) {
+                    panel.style.maxHeight = panel.scrollHeight + 'px';
+                } else {
+                    panel.style.maxHeight = '0';
+                }
+            });
+
+            // View toggle functionality
+            document.getElementById('gridViewBtn').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('listViewBtn').classList.remove('active');
+                doctorsContainer.classList.remove('md:grid-cols-1');
+                doctorsContainer.classList.add('md:grid-cols-2', 'lg:grid-cols-3');
+            });
+
+            document.getElementById('listViewBtn').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('gridViewBtn').classList.remove('active');
+                doctorsContainer.classList.remove('md:grid-cols-2', 'lg:grid-cols-3');
+                doctorsContainer.classList.add('md:grid-cols-1');
+            });
+        }
+
+        // Render doctors based on current page and filters
+        function renderDoctors() {
+            // Show loading indicator
+            loadingIndicator.classList.remove('hidden');
+            doctorsContainer.classList.add('opacity-50');
+
+            // Simulate loading delay for a smoother experience
+            setTimeout(() => {
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const doctorsToShow = filteredDoctors.slice(startIndex, endIndex);
+
+                doctorsContainer.innerHTML = '';
+
+                if (doctorsToShow.length === 0) {
+                    doctorsContainer.innerHTML = `
+                        <div class="col-span-full py-12 text-center empty-state">
+                            <i class="fas fa-user-md text-4xl text-gray-400 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-600">No doctors found</h3>
+                            <p class="text-gray-500 mt-1">Try adjusting your search or filters</p>
+                        </div>
+                    `;
+                } else {
+                    doctorsToShow.forEach((doctor, index) => {
+                        const doctorCard = createDoctorCard(doctor, index);
+                        doctorsContainer.appendChild(doctorCard);
+                    });
+                }
+
+                // Update counters
+                totalDoctorsCountElement.textContent = filteredDoctors.length;
+                currentPageStartElement.textContent = startIndex + 1;
+                currentPageEndElement.textContent = Math.min(endIndex, filteredDoctors.length);
+                
+                // Update available today count
+                const availableTodayCount = filteredDoctors.filter(d => d.available).length;
+                availableTodayElement.textContent = availableTodayCount;
+
+                // Hide loading indicator
+                loadingIndicator.classList.add('hidden');
+                doctorsContainer.classList.remove('opacity-50');
+
+                // Reattach event listeners for favorite buttons and actions
+                attachDoctorCardEventListeners();
+            }, 500);
+        }
+
+        // Create a doctor card element
+        function createDoctorCard(doctor, index) {
+            const stars = generateStarRating(doctor.rating);
+            
+            return document.createRange().createContextualFragment(`
+                <div class="doctor-card card-hover animate-card" style="animation-delay: ${index * 0.1}s" data-id="${doctor.id}">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="relative">
+                                    <img src="${doctor.image}" alt="${doctor.name}" class="profile-avatar">
+                                    <div class="availability-dot ${doctor.available ? 'bg-green-500 pulse' : 'bg-red-500'}"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 text-lg">${doctor.name}</h3>
+                                    <p class="text-gray-500 text-sm">${doctor.specialty}</p>
+                                </div>
+                            </div>
+                            <button class="favorite-btn ${doctor.favorite ? 'favorited text-yellow-500' : 'text-gray-400 hover:text-yellow-500'} text-xl">
+                                <i class="${doctor.favorite ? 'fas' : 'far'} fa-star"></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="rating-stars">
+                                ${stars}
+                            </div>
+                            <span class="text-sm text-gray-600">${doctor.rating} (${doctor.reviews} reviews)</span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${doctor.tags.map(tag => `<span class="tag bg-blue-100 text-blue-800">${tag}</span>`).join('')}
+                        </div>
+
+                        <p class="text-gray-600 text-sm mb-4">${doctor.description}</p>
+
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div>
+                                <i class="fas fa-briefcase mr-1"></i> ${doctor.experience} years exp.
+                            </div>
+                            <div>
+                                <i class="fas fa-map-marker-alt mr-1"></i> ${doctor.distance} mi away
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div class="${doctor.available ? 'text-green-600' : 'text-red-600'} text-sm font-medium">
+                                <i class="fas fa-circle text-xs mr-1"></i> ${doctor.available ? 'Available Today' : 'Not Available'}
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="action-btn bg-indigo-50 text-indigo-600 view-profile" title="View Profile">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn bg-green-50 text-green-600 book-appointment" title="Book Appointment" ${!doctor.available ? 'disabled style="opacity:0.5"' : ''}>
+                                    <i class="fas fa-calendar-check"></i>
+                                </button>
+                                <button class="action-btn bg-blue-50 text-blue-600 send-message" title="Send Message">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        // Generate star rating HTML
+        function generateStarRating(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 1; i <= 5; i++) {
+                if (i <= fullStars) {
+                    stars += '<span class="star filled">★</span>';
+                } else if (i === fullStars + 1 && hasHalfStar) {
+                    stars += '<span class="star half">★</span>';
+                } else {
+                    stars += '<span class="star">★</span>';
+                }
+            }
+            
+            return stars;
+        }
+
+        // Attach event listeners to doctor cards
+        function attachDoctorCardEventListeners() {
+            // Favorite buttons
+            document.querySelectorAll('.favorite-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.doctor-card');
+                    const doctorId = parseInt(card.getAttribute('data-id'));
+                    const doctor = doctorsData.find(d => d.id === doctorId);
+                    
+                    if (doctor) {
+                        doctor.favorite = !doctor.favorite;
+                        const icon = this.querySelector('i');
+                        
+                        if (doctor.favorite) {
+                            icon.classList.replace('far', 'fas');
+                            this.classList.add('favorited');
+                        } else {
+                            icon.classList.replace('fas', 'far');
+                            this.classList.remove('favorited');
+                        }
+                    }
+                });
+            });
+
+            // View profile buttons
+            document.querySelectorAll('.view-profile').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.doctor-card');
+                    const doctorId = parseInt(card.getAttribute('data-id'));
+                    const doctor = doctorsData.find(d => d.id === doctorId);
+                    
+                    if (doctor) {
+                        openDoctorModal(doctor);
+                    }
+                });
+            });
+
+            // Book appointment buttons
+            document.querySelectorAll('.book-appointment').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.disabled) return;
+                    
+                    const card = this.closest('.doctor-card');
+                    const doctorId = parseInt(card.getAttribute('data-id'));
+                    const doctor = doctorsData.find(d => d.id === doctorId);
+                    
+                    if (doctor) {
+                        openAppointmentModal(doctor);
+                    }
+                });
+            });
+
+            // Send message buttons
+            document.querySelectorAll('.send-message').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.doctor-card');
+                    const doctorId = parseInt(card.getAttribute('data-id'));
+                    const doctor = doctorsData.find(d => d.id === doctorId);
+                    
+                    if (doctor) {
+                        openMessageModal(doctor);
+                    }
+                });
+            });
+        }
+
+        // Open doctor detail modal
+        function openDoctorModal(doctor) {
+            currentDoctor = doctor;
+            
+            document.getElementById('modalDoctorName').textContent = doctor.name;
+            
+            const modalContent = document.getElementById('doctorModalContent');
+            modalContent.innerHTML = `
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="${doctor.image}" alt="${doctor.name}" class="w-24 h-24 rounded-full">
+                    <div>
+                        <h4 class="text-xl font-semibold">${doctor.name}</h4>
+                        <p class="text-indigo-600">${doctor.specialty}</p>
+                        <div class="flex items-center mt-2">
+                            <div class="rating-stars mr-2">
+                                ${generateStarRating(doctor.rating)}
+                            </div>
+                            <span class="text-sm text-gray-600">${doctor.rating} (${doctor.reviews} reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Experience</p>
+                        <p class="font-semibold">${doctor.experience} years</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Distance</p>
+                        <p class="font-semibold">${doctor.distance} miles away</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Availability</p>
+                        <p class="font-semibold ${doctor.available ? 'text-green-600' : 'text-red-600'}">${doctor.available ? 'Available Today' : 'Not Available'}</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-500">Specializations</p>
+                        <p class="font-semibold">${doctor.tags.join(', ')}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h5 class="font-semibold mb-2">About</h5>
+                    <p class="text-gray-600">${doctor.description}</p>
+                </div>
+                
+                <div>
+                    <h5 class="font-semibold mb-2">Education & Background</h5>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>Medical Degree from University of Medical Sciences</li>
+                        <li>Board Certified in ${doctor.specialty}</li>
+                        <li>Fellow of the American College of Physicians</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('doctorModal').classList.add('active');
+        }
+
+        // Open appointment modal
+        function openAppointmentModal(doctor) {
+            currentDoctor = doctor;
+            
+            document.getElementById('appointmentDoctorName').textContent = `Book Appointment with ${doctor.name}`;
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').min = today;
+            document.getElementById('appointmentDate').value = today;
+            document.getElementById('appointmentTime').value = "";
+            document.getElementById('appointmentReason').value = "";
+            
+            document.getElementById('appointmentModal').classList.add('active');
+        }
+
+        // Open message modal
+        function openMessageModal(doctor) {
+            currentDoctor = doctor;
+            
+            document.getElementById('messageDoctorName').textContent = `Send Message to ${doctor.name}`;
+            
+            document.getElementById('messageSubject').value = "";
+            document.getElementById('messageContent').value = "";
+            
+            document.getElementById('messageModal').classList.add('active');
+        }
+
+        // Close all modals
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        // Filter doctors based on search input
+        function filterDoctors() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (searchTerm.trim() === '') {
+                filteredDoctors = [...doctorsData];
+            } else {
+                filteredDoctors = doctorsData.filter(doctor => 
+                    doctor.name.toLowerCase().includes(searchTerm) ||
+                    doctor.specialty.toLowerCase().includes(searchTerm) ||
+                    doctor.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    doctor.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            currentPage = 1;
+            renderDoctors();
+            updatePagination();
+        }
+
+        // Apply filters from filter panel
+        function applyFilters() {
+            const selectedSpecializations = Array.from(document.querySelectorAll('.specialization-filter:checked')).map(input => input.value);
+            const availabilityFilter = document.querySelector('input[name="availability"]:checked').value;
+            const ratingFilter = document.querySelector('input[name="rating"]:checked').value;
+            const experienceFilter = document.querySelector('.experience-filter').value;
+            
+            filteredDoctors = doctorsData.filter(doctor => {
+                // Specialization filter
+                if (selectedSpecializations.length > 0 && !selectedSpecializations.includes(doctor.specialty)) {
+                    return false;
+                }
+                
+                // Availability filter
+                if (availabilityFilter !== 'any') {
+                    if (availabilityFilter === 'today' && !doctor.available) {
+                        return false;
+                    }
+                    // Additional availability logic could be added for week filters
+                }
+                
+                // Rating filter
+                if (ratingFilter !== 'any' && doctor.rating < parseFloat(ratingFilter)) {
+                    return false;
+                }
+                
+                // Experience filter
+                if (experienceFilter !== 'any') {
+                    if (experienceFilter === '1-5' && (doctor.experience < 1 || doctor.experience > 5)) {
+                        return false;
+                    }
+                    if (experienceFilter === '5-10' && (doctor.experience < 5 || doctor.experience > 10)) {
+                        return false;
+                    }
+                    if (experienceFilter === '10+' && doctor.experience < 10) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            currentPage = 1;
+            renderDoctors();
+            updatePagination();
+            
+            // Close filter panel
+            document.getElementById('filterPanel').classList.remove('open');
+            document.getElementById('filterPanel').style.maxHeight = '0';
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            // Uncheck all specialization filters
+            document.querySelectorAll('.specialization-filter').forEach(input => {
+                input.checked = false;
+            });
+            
+            // Reset availability filter to "anytime"
+            document.getElementById('anytime').checked = true;
+            
+            // Reset rating filter to "any"
+            document.getElementById('rating-any').checked = true;
+            
+            // Reset experience filter to "any"
+            document.querySelector('.experience-filter').value = 'any';
+            
+            // Clear search
+            searchInput.value = '';
+            
+            // Reset filtered doctors
+            filteredDoctors = [...doctorsData];
+            
+            currentPage = 1;
+            renderDoctors();
+            updatePagination();
+        }
+
+        // Apply quick filter
+        function applyQuickFilter(filterType) {
+            switch(filterType) {
+                case 'all':
+                    resetFilters();
+                    break;
+                case 'top-rated':
+                    filteredDoctors = doctorsData.filter(doctor => doctor.rating >= 4.5);
+                    break;
+                case 'available-today':
+                    filteredDoctors = doctorsData.filter(doctor => doctor.available);
+                    break;
+                case 'new':
+                    // For demo, consider doctors with less than 5 years experience as "new"
+                    filteredDoctors = doctorsData.filter(doctor => doctor.experience < 5);
+                    break;
+            }
+            
+            currentPage = 1;
+            renderDoctors();
+            updatePagination();
+        }
+
+        // Sort doctors
+        function sortDoctors(sortBy) {
+            switch(sortBy) {
+                case 'experience':
+                    filteredDoctors.sort((a, b) => b.experience - a.experience);
+                    break;
+                case 'rating':
+                    filteredDoctors.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'availability':
+                    filteredDoctors.sort((a, b) => {
+                        if (a.available && !b.available) return -1;
+                        if (!a.available && b.available) return 1;
+                        return 0;
+                    });
+                    break;
+                case 'recommended':
+                default:
+                    // Default sorting (by id for demo)
+                    filteredDoctors.sort((a, b) => a.id - b.id);
+                    break;
+            }
+        }
+
+        // Go to specific page
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+            
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            renderDoctors();
+            updatePagination();
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+            const paginationContainer = document.querySelector('.pagination-prev').parentElement;
+            
+            // Clear existing page buttons (except prev/next)
+            document.querySelectorAll('.pagination-page').forEach(button => {
+                button.remove();
+            });
+            
+            // Create new page buttons
+            let pagesHtml = '';
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            // Add first page and ellipsis if needed
+            if (startPage > 1) {
+                pagesHtml += `<button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="1">1</button>`;
+                if (startPage > 2) {
+                    pagesHtml += `<span class="px-2 text-gray-500">...</span>`;
+                }
+            }
+            
+            // Add page buttons
+            for (let i = startPage; i <= endPage; i++) {
+                pagesHtml += `<button class="px-4 py-2 text-sm font-medium ${i === currentPage ? 'text-white bg-indigo-600 border border-indigo-600' : 'text-gray-500 bg-white border border-gray-300'} rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="${i}">${i}</button>`;
+            }
+            
+            // Add last page and ellipsis if needed
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagesHtml += `<span class="px-2 text-gray-500">...</span>`;
+                }
+                pagesHtml += `<button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 pagination-page" data-page="${totalPages}">${totalPages}</button>`;
+            }
+            
+            // Insert page buttons before the next button
+            const nextButton = document.querySelector('.pagination-next');
+            nextButton.insertAdjacentHTML('beforebegin', pagesHtml);
+            
+            // Update prev/next button states
+            document.querySelector('.pagination-prev').disabled = currentPage === 1;
+            document.querySelector('.pagination-next').disabled = currentPage === totalPages;
+            
+            // Reattach event listeners to new page buttons
+            document.querySelectorAll('.pagination-page').forEach(button => {
+                button.addEventListener('click', function() {
+                    const page = parseInt(this.getAttribute('data-page'));
+                    goToPage(page);
+                });
+            });
+        }
+
+        // Debounce function for search input
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+
+        // Keep existing functionality for animation and tooltips
+        const cards = document.querySelectorAll('.animate-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        const availabilityDots = document.querySelectorAll('.availability-dot');
+        availabilityDots.forEach(dot => {
+            if (dot.classList.contains('bg-green-500')) {
+                dot.classList.add('pulse');
+            }
+        });
+
+        // Initialize tooltips
+        document.querySelectorAll('[title]').forEach(element => {
+            element.addEventListener('mouseenter', function(e) {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'absolute z-10 px-2 py-1 text-xs text-white bg-gray-900 rounded shadow-lg';
+                tooltip.textContent = this.getAttribute('title');
+                tooltip.style.top = (e.pageY - 30) + 'px';
+                tooltip.style.left = (e.pageX - 10) + 'px';
+                document.body.appendChild(tooltip);
+
+                this.addEventListener('mouseleave', function() {
+                    document.body.removeChild(tooltip);
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+</html>
